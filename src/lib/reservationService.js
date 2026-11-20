@@ -24,7 +24,6 @@ export const OCCASIONS = [
 const LOCAL_STORAGE_KEY = 'garden_reservations_data';
 const BLOCKED_DATES_KEY = 'garden_blocked_dates';
 
-// Récupérer le store local
 function getLocalReservations() {
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -73,10 +72,7 @@ export function generateReference() {
 // Valider un numéro de téléphone béninois (+229)
 export function validateBeninPhone(phone) {
   if (!phone) return { valid: false, error: "Le numéro de téléphone est requis." };
-  // Nettoyage des espaces, tirets et parenthèses
   const cleaned = phone.replace(/[\s\-\(\)\.]/g, '');
-  
-  // Format international +229 ou 00229 ou format national 8 ou 10 chiffres
   const regex = /^(?:\+229|00229)?(01|4[0-9]|5[0-9]|6[0-9]|9[0-9])\d{6}$/;
   if (!regex.test(cleaned)) {
     return {
@@ -84,7 +80,6 @@ export function validateBeninPhone(phone) {
       error: "Veuillez entrer un numéro béninois valide (ex: +229 90 00 56 56 ou 90005656)."
     };
   }
-  // Normaliser en format standard +229XXXXXXXX
   let normalized = cleaned;
   if (normalized.startsWith('+229')) {
     normalized = normalized.substring(4);
@@ -94,7 +89,7 @@ export function validateBeninPhone(phone) {
   return { valid: true, formatted: `+229 ${normalized.substring(0, 2)} ${normalized.substring(2, 4)} ${normalized.substring(4, 6)} ${normalized.substring(6)}` };
 }
 
-// Calcul de la capacité restante par créneau pour une date donnée
+// Calcul de la capacité restante par créneau
 export async function getSlotAvailability(date, guestCount = 2, selectedZone = null) {
   if (!date) return [];
 
@@ -113,7 +108,6 @@ export async function getSlotAvailability(date, guestCount = 2, selectedZone = n
         existingReservations = data;
       }
     } catch (err) {
-      console.warn("Fallback local pour la vérification des créneaux:", err);
       existingReservations = getLocalReservations().filter(
         r => r.date === date && r.statut !== 'annulee' && r.statut !== 'rejetee'
       );
@@ -137,17 +131,14 @@ export async function getSlotAvailability(date, guestCount = 2, selectedZone = n
       return { ...slot, available: false, remainingGuests: 0, reason: "Créneau complet" };
     }
 
-    // Calcul des couverts déjà réservés sur ce créneau
     const reservationsForSlot = existingReservations.filter(r => r.heure === slot.id);
     
-    // Si une zone spécifique est sélectionnée, vérifier aussi la capacité de cette zone
     let zoneFull = false;
     if (selectedZone) {
       const zoneConfig = zones.find(z => z.id === selectedZone);
       if (zoneConfig) {
         const reservationsInZone = reservationsForSlot.filter(r => r.zone_id === selectedZone);
-        const bookedTablesInZone = reservationsInZone.length;
-        if (bookedTablesInZone >= zoneConfig.maxTables) {
+        if (reservationsInZone.length >= zoneConfig.maxTables) {
           zoneFull = true;
         }
       }
@@ -169,18 +160,15 @@ export async function getSlotAvailability(date, guestCount = 2, selectedZone = n
 
 // Création d'une réservation
 export async function createReservation(bookingData) {
-  // 1. Anti-spam Honeypot
   if (bookingData.website_honeypot) {
     throw new Error("Erreur de détection bot.");
   }
 
-  // 2. Validation téléphone
   const phoneCheck = validateBeninPhone(bookingData.telephone);
   if (!phoneCheck.valid) {
     throw new Error(phoneCheck.error);
   }
 
-  // 3. Limitation par numéro (max 3 réservations actives)
   const existingList = isSupabaseConfigured ? [] : getLocalReservations();
   const activeCount = existingList.filter(
     r => r.telephone.replace(/\s+/g, '') === phoneCheck.formatted.replace(/\s+/g, '') &&
@@ -188,7 +176,7 @@ export async function createReservation(bookingData) {
   ).length;
 
   if (activeCount >= 3) {
-    throw new Error("Vous avez déjà plusieurs réservations actives. Veuillez contacter directement le restaurant par WhatsApp ou téléphone.");
+    throw new Error("Vous avez déjà plusieurs réservations actives. Veuillez contacter directement le restaurant par WhatsApp.");
   }
 
   const reference = generateReference();
@@ -221,8 +209,7 @@ export async function createReservation(bookingData) {
       if (error) throw error;
       return data || reservationRecord;
     } catch (err) {
-      console.warn("Échec Supabase, enregistrement en local:", err);
-      // Fallback local
+      console.warn("Échec Supabase, enregistrement local:", err);
       const current = getLocalReservations();
       current.unshift(reservationRecord);
       saveLocalReservations(current);
@@ -236,7 +223,6 @@ export async function createReservation(bookingData) {
   }
 }
 
-// Récupérer une réservation par référence (pour modifier / annuler)
 export async function getReservationByReference(reference) {
   if (!reference) return null;
 
@@ -258,7 +244,6 @@ export async function getReservationByReference(reference) {
   return local.find(r => r.reference.toUpperCase() === reference.trim().toUpperCase()) || null;
 }
 
-// Mettre à jour le statut (Admin ou Client annulation)
 export async function updateReservationStatus(reference, newStatus, internalNote = "") {
   if (isSupabaseConfigured) {
     try {
@@ -286,7 +271,6 @@ export async function updateReservationStatus(reference, newStatus, internalNote
   return null;
 }
 
-// Obtenir toutes les réservations (pour le tableau de bord Restaurateur)
 export async function getAllReservations() {
   if (isSupabaseConfigured) {
     try {
@@ -305,7 +289,6 @@ export async function getAllReservations() {
   return getLocalReservations();
 }
 
-// Gestion des dates bloquées
 export function getBlockedDates() {
   return getLocalBlockedDates();
 }
@@ -322,66 +305,64 @@ export function toggleBlockDate(date, slotId = null, reason = "Privatisation") {
   return current;
 }
 
-// Formater une date YYYY-MM-DD en français lisible (ex: Samedi 21 novembre 2026)
-function formatDateFR(dateStr) {
+// Formater une date YYYY-MM-DD en français propre
+export function formatDateFR(dateStr) {
   if (!dateStr) return dateStr;
   try {
     const [year, month, day] = dateStr.split('-');
     const dateObj = new Date(year, parseInt(month) - 1, day);
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formatted = dateObj.toLocaleDateString('fr-FR', options);
-    // Première lettre en majuscule
     return formatted.charAt(0).toUpperCase() + formatted.slice(1);
   } catch {
     return dateStr;
   }
 }
 
-// Générateur du lien WhatsApp de confirmation pour le client (Mise en page VIP haut de gamme)
+// Générateur du lien WhatsApp (utilisant des puces universelles • sans risque d'émojis corrompus)
 export function generateWhatsAppClientLink(reservation) {
   const phoneRestaurant = import.meta.env.VITE_RESTAURANT_WHATSAPP || '22990005656';
   const cleanPhone = phoneRestaurant.replace(/\D/g, '');
   const dateLisible = formatDateFR(reservation.date);
 
   let message = 
-`🌴 *THE GARDEN ROOFTOP — COTONOU*
-✨ *Confirmation de Réservation de Table*
-━━━━━━━━━━━━━━━━━━━━
+`*THE GARDEN ROOFTOP — COTONOU*
+*Pass & Confirmation de Réservation*
+────────────────────────────
 
-Bonjour l'équipe, je viens de finaliser ma réservation :
+Bonjour l'équipe, je souhaite vous présenter ma réservation :
 
-🔖 *RÉFÉRENCE :* \`${reservation.reference}\`
-👤 *Nom :* *${reservation.nom.toUpperCase()}*
-📅 *Date :* ${dateLisible}
-⏰ *Heure :* *${reservation.heure}*
-👥 *Invités :* *${reservation.personnes} ${reservation.personnes > 1 ? 'personnes' : 'personne'}*
-📍 *Espace :* ${reservation.zone_name || reservation.zone_id}
-🎉 *Occasion :* ${reservation.occasion}
+• *RÉFÉRENCE :* ${reservation.reference}
+• *Nom :* ${reservation.nom.toUpperCase()}
+• *Date :* ${dateLisible}
+• *Heure :* ${reservation.heure}
+• *Invités :* ${reservation.personnes} ${reservation.personnes > 1 ? 'personnes' : 'personne'}
+• *Espace :* ${reservation.zone_name || reservation.zone_id}
+• *Occasion :* ${reservation.occasion}
 `;
 
   if (reservation.demandes_speciales && reservation.demandes_speciales.trim()) {
-    message += `📝 *Demande particulière :* _${reservation.demandes_speciales.trim()}_\n`;
+    message += `• *Note :* ${reservation.demandes_speciales.trim()}\n`;
   }
 
   message += 
-`━━━━━━━━━━━━━━━━━━━━
-Merci de bien vouloir me confirmer la table.
-À très bientôt sous les étoiles ! 🍸`;
+`────────────────────────────
+Mon Pass Numérique est généré. Merci de bien vouloir me confirmer ma table !
+A très bientôt au rooftop.`;
 
   return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
 }
 
-// Générateur du lien WhatsApp de repli rapide
 export function generateWhatsAppFallbackLink() {
   const phoneRestaurant = import.meta.env.VITE_RESTAURANT_WHATSAPP || '22990005656';
   const cleanPhone = phoneRestaurant.replace(/\D/g, '');
   const message = 
-`🌴 *THE GARDEN ROOFTOP — COTONOU*
+`*THE GARDEN ROOFTOP — COTONOU*
 Bonjour l'équipe The Garden !
 
 Je souhaite réserver une table chez vous. Pourriez-vous m'indiquer vos disponibilités pour ce soir ? 
 
-Merci d'avance pour votre accueil ! ✨`;
+Merci d'avance pour votre accueil !`;
 
   return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
 }
