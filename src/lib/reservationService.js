@@ -322,25 +322,66 @@ export function toggleBlockDate(date, slotId = null, reason = "Privatisation") {
   return current;
 }
 
-// Générateur du lien WhatsApp de confirmation pour le client
+// Formater une date YYYY-MM-DD en français lisible (ex: Samedi 21 novembre 2026)
+function formatDateFR(dateStr) {
+  if (!dateStr) return dateStr;
+  try {
+    const [year, month, day] = dateStr.split('-');
+    const dateObj = new Date(year, parseInt(month) - 1, day);
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formatted = dateObj.toLocaleDateString('fr-FR', options);
+    // Première lettre en majuscule
+    return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+  } catch {
+    return dateStr;
+  }
+}
+
+// Générateur du lien WhatsApp de confirmation pour le client (Mise en page VIP haut de gamme)
 export function generateWhatsAppClientLink(reservation) {
   const phoneRestaurant = import.meta.env.VITE_RESTAURANT_WHATSAPP || '22990005656';
-  const text = `Bonjour The Garden Rooftop, j'ai réservé une table (Réf: ${reservation.reference}) :\n` +
-    `👤 Nom : ${reservation.nom}\n` +
-    `📅 Date : ${reservation.date}\n` +
-    `⏰ Heure : ${reservation.heure}\n` +
-    `👥 Personnes : ${reservation.personnes}\n` +
-    `📍 Espace : ${reservation.zone_name || reservation.zone_id}\n` +
-    `🎉 Occasion : ${reservation.occasion}\n` +
-    (reservation.demandes_speciales ? `📝 Demande : ${reservation.demandes_speciales}\n` : '') +
-    `Merci de bien vouloir confirmer ma table.`;
+  const cleanPhone = phoneRestaurant.replace(/\D/g, '');
+  const dateLisible = formatDateFR(reservation.date);
 
-  return `https://wa.me/${phoneRestaurant}?text=${encodeURIComponent(text)}`;
+  let message = 
+`🌴 *THE GARDEN ROOFTOP — COTONOU*
+✨ *Confirmation de Réservation de Table*
+━━━━━━━━━━━━━━━━━━━━
+
+Bonjour l'équipe, je viens de finaliser ma réservation :
+
+🔖 *RÉFÉRENCE :* \`${reservation.reference}\`
+👤 *Nom :* *${reservation.nom.toUpperCase()}*
+📅 *Date :* ${dateLisible}
+⏰ *Heure :* *${reservation.heure}*
+👥 *Invités :* *${reservation.personnes} ${reservation.personnes > 1 ? 'personnes' : 'personne'}*
+📍 *Espace :* ${reservation.zone_name || reservation.zone_id}
+🎉 *Occasion :* ${reservation.occasion}
+`;
+
+  if (reservation.demandes_speciales && reservation.demandes_speciales.trim()) {
+    message += `📝 *Demande particulière :* _${reservation.demandes_speciales.trim()}_\n`;
+  }
+
+  message += 
+`━━━━━━━━━━━━━━━━━━━━
+Merci de bien vouloir me confirmer la table.
+À très bientôt sous les étoiles ! 🍸`;
+
+  return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
 }
 
 // Générateur du lien WhatsApp de repli rapide
 export function generateWhatsAppFallbackLink() {
   const phoneRestaurant = import.meta.env.VITE_RESTAURANT_WHATSAPP || '22990005656';
-  const text = `Bonjour The Garden Rooftop, je souhaite réserver une table. Pourriez-vous m'indiquer vos disponibilités ?`;
-  return `https://wa.me/${phoneRestaurant}?text=${encodeURIComponent(text)}`;
+  const cleanPhone = phoneRestaurant.replace(/\D/g, '');
+  const message = 
+`🌴 *THE GARDEN ROOFTOP — COTONOU*
+Bonjour l'équipe The Garden !
+
+Je souhaite réserver une table chez vous. Pourriez-vous m'indiquer vos disponibilités pour ce soir ? 
+
+Merci d'avance pour votre accueil ! ✨`;
+
+  return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
 }
