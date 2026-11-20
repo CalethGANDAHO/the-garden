@@ -2,7 +2,9 @@
 
 Site web officiel et système de réservation haut de gamme pour **The Garden Rooftop**, situé à Cotonou (Bénin).
 
-Reconstruit avec une architecture moderne, fluide, ultra-rapide (optimisé mobile-first 3G/4G pour le Bénin), respectant scrupuleusement l'identité visuelle d'origine (ambiance lounge sombre, dégradés néons vert-cyan, glassmorphism, bascule Jour / Nuit) et enrichi d'un système de réservation complet connecté à Supabase et WhatsApp.
+Reconstruit avec une architecture moderne, fluide, ultra-rapide (optimisé mobile-first 3G/4G pour le Bénin), respectant scrupuleusement l'identité visuelle d'origine (ambiance lounge sombre, dégradés néons vert-cyan, glassmorphism, bascule Jour / Nuit) et enrichi d'un système de réservation complet connecté à Supabase, WhatsApp et un Pass Numérique VIP avec QR Code.
+
+🔗 **Dépôt officiel GitHub :** [https://github.com/CalethGANDAHO/the-garden](https://github.com/CalethGANDAHO/the-garden)
 
 ---
 
@@ -16,13 +18,19 @@ Reconstruit avec une architecture moderne, fluide, ultra-rapide (optimisé mobil
 - **Programmation & Événements :** Mardi Karaoké, Jeudi Live Afrobeats, Vendredi/Samedi DJ Set, Dimanche Brunch.
 - **SEO Local & Réseaux Sociaux :** Balises Open Graph, Twitter Cards, Schema.org `Restaurant` géolocalisé à Cotonou.
 
+### 🎫 Pass Numérique VIP (Ticket de Table avec QR Code)
+- **Ticket Digital Haute Définition :** Présentation sous forme de pass d'embarquement VIP aux couleurs du restaurant (dégradé vert/cyan, perforations de billet, badge *TABLE CONFIRMÉE*).
+- **QR Code Unique :** Généré dynamiquement pour chaque réservation, prêt à être scanné par le maître d'hôtel avec un smartphone pour valider l'entrée sans attente.
+- **Enregistrement / Impression :** Le client peut enregistrer son pass sur son portable (image / PDF) ou le garder ouvert pour le montrer à l'accueil.
+- **Retrouvable à tout moment :** Via le bouton *« Gérer ma table »*, le client peut réafficher son pass VIP n'importe quand en saisissant son numéro de réservation.
+
 ### 🛎️ Système de Réservation Haut de Gamme
 1. **Parcours en 3 étapes :**
    - **Étape 1 :** Date, nombre de couverts, créneau horaire avec calcul de disponibilité en temps réel (18h00 à 01h00, pas de créneaux fermés).
    - **Étape 2 :** Choix de l'espace (*Toit-terrasse Outdoor*, *Salon VIP Privé*, *Coin Bar & Billard*), occasion (anniversaire, karaoké, etc.) et demandes particulières.
    - **Étape 3 :** Coordonnées (nom, téléphone béninois indicatif +229 validé, e-mail facultatif), récapitulatif et politique de retenue (15 min).
 2. **Capacité & Anti-Surréservation :** Chaque créneau et chaque zone ont un nombre maximal de tables/couverts.
-3. **Confirmation Immédiate :** Référence unique générée (`GARDEN-2026-XXXX`) avec confettis et bouton direct d'envoi de confirmation pré-remplie sur WhatsApp.
+3. **Confirmation Immédiate :** Référence unique générée (`GARDEN-2026-XXXX`) avec confettis et bouton direct d'envoi de confirmation pré-remplie sur WhatsApp avec puces typographiques universelles (zéro caractère cassé).
 4. **Anti-Spam :** Protection Honeypot invisible pour les robots et limitation des réservations actives par numéro.
 5. **Gestion Client :** Bouton « Gérer ma table » permettant au client de retrouver sa réservation avec son numéro pour consulter ou annuler sans frais (réduction des no-shows).
 6. **Bouton de repli :** Possibilité de réserver à tout moment directement par WhatsApp.
@@ -37,9 +45,49 @@ Reconstruit avec une architecture moderne, fluide, ultra-rapide (optimisé mobil
 
 ---
 
+## 📦 Kit Universel Réutilisable pour d'autres Restaurants
+
+Vous souhaitez installer ce système sur le site web d'un **autre restaurant** ou bar sans devoir tout recoder ?
+
+Un dossier complet et prêt à l'emploi est inclus dans ce projet :  
+📁 **`restaurant-booking-kit/`**  
+📄 Fichier centralisé : **`src/data/restaurant.config.js`**
+
+### Comment l'adapter à un autre établissement en 2 minutes ?
+Ouvrez simplement `restaurant.config.js` et modifiez les informations clés :
+```javascript
+export const RESTAURANT_CONFIG = {
+  identity: {
+    name: "Nom du Restaurant",
+    city: "Cotonou", // ou Abidjan, Dakar, Paris...
+    currency: "FCFA", // ou EUR, USD...
+    prefixReference: "RESTO" // Générera RESTO-2026-XXXX
+  },
+  contact: {
+    whatsappNumber: "22990005656", // Numéro WhatsApp de réception
+    phoneFormatted: "+229 90 00 56 56"
+  },
+  policy: {
+    holdTableMinutes: 15,
+    standardDurationMinutes: 120
+  },
+  slots: [
+    { id: '12:00', label: '12:00', maxCapacity: 40 },
+    { id: '19:00', label: '19:00', maxCapacity: 50 }
+  ],
+  zones: [
+    { id: "terrasse", name: "Terrasse Extérieure", maxTables: 10 },
+    { id: "salle", name: "Salle Climatisée", maxTables: 8 }
+  ]
+};
+```
+Le reste du système (3 étapes, QR Code, pass VIP, WhatsApp, exports) s'adapte automatiquement à cette configuration !
+
+---
+
 ## 🛠️ Stack Technique
 
-- **Frontend :** React 18 / 19, Vite, Tailwind CSS, Lucide Icons, Canvas Confetti, SheetJS (XLSX).
+- **Frontend :** React 18 / 19, Vite, Tailwind CSS, Lucide Icons, Canvas Confetti, QRCode, SheetJS (XLSX).
 - **Base de Données :** Supabase (PostgreSQL avec Row Level Security).
   - *Note :* L'application intègre un mode hors-ligne / fallback local miroir automatique : elle fonctionne parfaitement même sans clé Supabase !
 - **Hébergement :** Netlify (optimisé avec `netlify.toml` et mise en cache des images WebP).
@@ -54,7 +102,8 @@ Reconstruit avec une architecture moderne, fluide, ultra-rapide (optimisé mobil
 
 ### Commandes
 ```bash
-# 1. Cloner ou ouvrir le dossier du projet
+# 1. Cloner le projet depuis GitHub
+git clone https://github.com/CalethGANDAHO/the-garden.git
 cd the-garden
 
 # 2. Installer les dépendances
@@ -101,8 +150,8 @@ VITE_ADMIN_PASSWORD=garden2026
 
 ## 🌐 Déploiement sur Netlify
 
-### Méthode 1 : Déploiement Continu via GitHub (Recommandé)
-1. Poussez votre code sur un dépôt GitHub (voir section suivante).
+### Méthode Continue via GitHub (Recommandé)
+1. Votre dépôt est déjà en ligne sur : `https://github.com/CalethGANDAHO/the-garden`
 2. Connectez-vous sur [Netlify](https://app.netlify.com).
 3. Cliquez sur **Add new site > Import an existing project > GitHub**.
 4. Sélectionnez votre dépôt `the-garden`.
@@ -110,26 +159,4 @@ VITE_ADMIN_PASSWORD=garden2026
    - Build command : `npm run build`
    - Publish directory : `dist`
 6. Renseignez vos variables d'environnement dans Netlify (`Site configuration > Environment variables`).
-7. Cliquez sur **Deploy site**.
-
-### Méthode 2 : Déploiement Manuel (Drag & Drop)
-1. Exécutez `npm run build`.
-2. Glissez-déposez le dossier `dist/` généré directement sur [app.netlify.com/drop](https://app.netlify.com/drop).
-
----
-
-## 🔒 Sauvegarde Git (Pour ne plus jamais perdre le code)
-
-Le projet est initialisé avec Git. Pour le sauvegarder définitivement sur votre compte GitHub ou GitLab :
-
-```bash
-# 1. Vérifier l'état du dépôt
-git status
-
-# 2. Créer un nouveau dépôt sur GitHub (ex: the-garden-rooftop)
-# 3. Lier votre dépôt local et pousser votre code
-git remote add origin https://github.com/votre-nom-utilisateur/the-garden-rooftop.git
-git branch -M main
-git push -u origin main
-```
-Ainsi, votre code sera sauvegardé pour toujours dans le cloud !
+7. Cliquez sur **Deploy the-garden**.
