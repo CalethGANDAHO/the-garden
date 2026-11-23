@@ -1,7 +1,9 @@
 import React from 'react';
 import { MapPin, Clock, DollarSign, ExternalLink, Phone, Navigation } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function LocationAccess() {
+  const { t } = useLanguage();
   const mapEmbedUrl = "https://maps.google.com/maps?q=9FF9%2B68%20Cotonou&t=&z=15&ie=UTF8&iwloc=&output=embed";
   const mapsDirectUrl = "https://maps.google.com/?q=9FF9+68,Cotonou,Benin";
 
@@ -10,10 +12,10 @@ export default function LocationAccess() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mb-10 min-w-0">
           <span className="text-xs font-bold tracking-[0.3em] text-primary uppercase flex items-center gap-2">
-            <span className="size-1.5 rounded-full bg-primary" /> Où nous trouver
+            <span className="size-1.5 rounded-full bg-primary" /> {t.location.tag}
           </span>
           <h2 className="mt-2 text-3xl sm:text-5xl font-display font-extrabold tracking-tight text-white">
-            Localisation & Accès
+            {t.location.title}
           </h2>
         </div>
 
@@ -25,7 +27,7 @@ export default function LocationAccess() {
                 The Garden Rooftop
               </h3>
               <p className="text-xs text-primary font-semibold tracking-wide uppercase mt-0.5">
-                Bar, Restaurant & Lounge à Cotonou
+                {t.location.subtitle}
               </p>
             </div>
 
@@ -36,7 +38,7 @@ export default function LocationAccess() {
                   <MapPin className="size-5" />
                 </span>
                 <div>
-                  <strong className="block font-semibold text-white">Adresse & Repère</strong>
+                  <strong className="block font-semibold text-white">{t.location.addressLabel}</strong>
                   <span className="text-xs text-muted-foreground block mt-0.5">
                     Plus Code : <strong>9FF9+68 Cotonou, Bénin</strong>
                   </span>
@@ -49,12 +51,12 @@ export default function LocationAccess() {
                   <Clock className="size-5" />
                 </span>
                 <div>
-                  <strong className="block font-semibold text-white">Horaires d'ouverture</strong>
+                  <strong className="block font-semibold text-white">{t.location.hoursLabel}</strong>
                   <span className="text-xs text-leaf font-medium block mt-0.5">
-                    Ouvert 7 jours sur 7 : 18:00 — 05:00
+                    {t.location.hoursVal}
                   </span>
                   <span className="text-[11px] text-muted-foreground block mt-0.5">
-                    Service tardif & cocktails en continu
+                    {t.location.hoursSub}
                   </span>
                 </div>
               </li>
@@ -65,9 +67,9 @@ export default function LocationAccess() {
                   <DollarSign className="size-5" />
                 </span>
                 <div>
-                  <strong className="block font-semibold text-white">Fourchette de prix</strong>
+                  <strong className="block font-semibold text-white">{t.location.priceLabel}</strong>
                   <span className="text-xs text-muted-foreground block mt-0.5">
-                    2.000 à 4.000 FCFA par personne en moyenne
+                    {t.location.priceVal}
                   </span>
                 </div>
               </li>
@@ -78,7 +80,7 @@ export default function LocationAccess() {
                   <Phone className="size-5" />
                 </span>
                 <div>
-                  <strong className="block font-semibold text-white">Réservations directes</strong>
+                  <strong className="block font-semibold text-white">{t.location.phoneLabel}</strong>
                   <a
                     href="tel:+22990005656"
                     className="text-xs text-primary font-bold hover:underline block mt-0.5"
@@ -96,7 +98,7 @@ export default function LocationAccess() {
               className="flex w-full items-center justify-center gap-2 rounded-2xl bg-white/10 hover:bg-white/15 py-3.5 px-4 text-xs font-bold text-white transition-colors"
             >
               <Navigation className="size-4 text-primary" />
-              Ouvrir l'itinéraire Google Maps
+              {t.location.openMaps}
             </a>
           </div>
 

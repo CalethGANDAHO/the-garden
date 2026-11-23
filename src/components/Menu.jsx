@@ -1,14 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import { useVibe } from '../context/VibeContext';
-import { menuCategories, menuItems } from '../data/menuData';
+import { useLanguage } from '../context/LanguageContext';
+import { menuItems } from '../data/menuData';
 import { formatPrice } from '../lib/utils';
 import { Sparkles, Moon, Sun, ArrowRight } from 'lucide-react';
 import MenuModal from './MenuModal';
 
 export default function Menu({ onSelectDishForReservation }) {
   const { vibe } = useVibe();
+  const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedItem, setSelectedItem] = useState(null);
+
+  const categories = [
+    { id: 'all', label: t.menu.all },
+    { id: 'cocktails', label: t.menu.cocktails },
+    { id: 'grill', label: t.menu.grill },
+    { id: 'late', label: t.menu.late }
+  ];
 
   // Filtrage et tri contextuel Jour/Nuit
   const filteredItems = useMemo(() => {
@@ -27,20 +36,20 @@ export default function Menu({ onSelectDishForReservation }) {
       <div className="grid gap-4 sm:flex sm:items-end sm:justify-between">
         <div className="min-w-0">
           <span className="text-xs font-bold tracking-[0.3em] text-primary uppercase flex items-center gap-2">
-            <span className="size-1.5 rounded-full bg-primary" /> Cuisine & Bar
+            <span className="size-1.5 rounded-full bg-primary" /> {t.menu.tag}
           </span>
           <h2 className="mt-2 text-3xl font-display font-extrabold tracking-tight sm:text-5xl text-white">
-            Filtrer par ambiance
+            {t.menu.title}
           </h2>
         </div>
         <p className="max-w-sm text-sm text-muted-foreground leading-relaxed">
-          Sélectionné pour l'ambiance {vibe === 'night' ? 'de nuit 🌙' : 'de jour ☀️'} — touchez un plat ou un cocktail pour explorer sa recette.
+          {vibe === 'night' ? t.menu.descNight : t.menu.descDay}
         </p>
       </div>
 
       {/* Catégories de filtres */}
       <div className="no-scrollbar mt-8 flex gap-2 overflow-x-auto pb-2">
-        {menuCategories.map(cat => (
+        {categories.map(cat => (
           <button
             key={cat.id}
             onClick={() => setActiveCategory(cat.id)}
@@ -82,11 +91,11 @@ export default function Menu({ onSelectDishForReservation }) {
                   <span className="glass absolute top-3 left-3 flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-medium text-white backdrop-blur-md">
                     {vibe === 'night' ? (
                       <>
-                        <Moon className="size-3 text-leaf" /> Choix du soir
+                        <Moon className="size-3 text-leaf" /> {t.menu.choiceNight}
                       </>
                     ) : (
                       <>
-                        <Sun className="size-3 text-yellow-400" /> Choix du jour
+                        <Sun className="size-3 text-yellow-400" /> {t.menu.choiceDay}
                       </>
                     )}
                   </span>
@@ -114,7 +123,7 @@ export default function Menu({ onSelectDishForReservation }) {
                     {item.ingredients.slice(0, 3).join(', ')}...
                   </span>
                   <span className="flex items-center gap-1 text-xs font-medium text-primary group-hover:translate-x-1 transition-transform">
-                    Détails <ArrowRight className="size-3" />
+                    {t.menu.detailsBtn} <ArrowRight className="size-3" />
                   </span>
                 </div>
               </div>

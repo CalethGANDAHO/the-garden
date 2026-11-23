@@ -1,8 +1,10 @@
 import React, { useRef } from 'react';
 import { events } from '../data/eventsData';
+import { useLanguage } from '../context/LanguageContext';
 import { ChevronLeft, ChevronRight, Clock, Star, Sparkles } from 'lucide-react';
 
 export default function Events() {
+  const { t } = useLanguage();
   const scrollRef = useRef(null);
 
   const scroll = (direction) => {
@@ -21,10 +23,10 @@ export default function Events() {
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
           <div className="mb-8 min-w-0">
             <span className="text-xs font-bold tracking-[0.3em] text-primary uppercase flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-primary" /> La Programmation
+              <span className="size-1.5 rounded-full bg-primary" /> {t.events.tag}
             </span>
             <h2 className="mt-2 text-3xl sm:text-5xl font-display font-extrabold tracking-tight text-white">
-              Événements de la Semaine
+              {t.events.title}
             </h2>
           </div>
 
@@ -100,7 +102,7 @@ export default function Events() {
                   href="#reserve"
                   className="flex items-center justify-between text-xs font-bold text-leaf hover:underline"
                 >
-                  Réserver pour cette soirée <span>→</span>
+                  {t.events.bookForEvent}
                 </a>
               </div>
             </div>
@@ -110,15 +112,11 @@ export default function Events() {
 
       {/* Badges récapitulatifs */}
       <div className="mx-auto max-w-6xl px-5 sm:px-8 mt-6 flex flex-wrap gap-3">
-        <span className="glass flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-white/90 border border-white/10">
-          <Sparkles className="size-3.5 text-primary" /> Soirée Karaoké du Mardi
-        </span>
-        <span className="glass flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-white/90 border border-white/10">
-          <Sparkles className="size-3.5 text-primary" /> Coin Bar & Billard Cosy
-        </span>
-        <span className="glass flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-white/90 border border-white/10">
-          <Sparkles className="size-3.5 text-primary" /> Détente d'Après-Travail (Afterwork)
-        </span>
+        {t.events.badges.map((badge, idx) => (
+          <span key={idx} className="glass flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold text-white/90 border border-white/10">
+            <Sparkles className="size-3.5 text-primary" /> {badge}
+          </span>
+        ))}
       </div>
     </section>
   );

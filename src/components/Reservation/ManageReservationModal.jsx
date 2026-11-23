@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Search, X, Calendar, Clock, MapPin, Users, AlertTriangle, CheckCircle, Loader2, QrCode } from 'lucide-react';
 import { getReservationByReference, updateReservationStatus, formatDateFR } from '../../lib/reservationService';
+import { useLanguage } from '../../context/LanguageContext';
 import DigitalPassModal from './DigitalPassModal';
 
 export default function ManageReservationModal({ isOpen, onClose }) {
+  const { t } = useLanguage();
   const [refInput, setRefInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [reservation, setReservation] = useState(null);
@@ -61,10 +63,10 @@ export default function ManageReservationModal({ isOpen, onClose }) {
           </button>
 
           <h3 className="font-display text-xl font-bold text-white mb-2">
-            Gérer ma réservation
+            {t.reservation.manageBtn}
           </h3>
           <p className="text-xs text-muted-foreground mb-4">
-            Entrez votre numéro de référence pour afficher votre Pass Numérique ou annuler votre table.
+            {t.reservation.passHeldHint}
           </p>
 
           {/* Formulaire de recherche */}
@@ -136,7 +138,7 @@ export default function ManageReservationModal({ isOpen, onClose }) {
                 onClick={() => setShowPass(true)}
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-leaf to-primary py-2.5 text-xs font-bold text-slate-950 shadow-md shadow-primary/20 hover:scale-[1.02] transition-transform"
               >
-                <QrCode className="size-4" /> Afficher mon Pass Numérique VIP
+                <QrCode className="size-4" /> {t.reservation.digitalPassBtn}
               </button>
 
               {reservation.statut !== 'annulee' && (

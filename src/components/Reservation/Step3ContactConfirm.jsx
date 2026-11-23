@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { User, Phone, Mail, ShieldCheck, ArrowLeft, Loader2, Clock, MapPin, Users, CheckCircle2 } from 'lucide-react';
 import { zones } from '../../data/zonesData';
 import { validateBeninPhone } from '../../lib/reservationService';
+import { useLanguage } from '../../context/LanguageContext';
 
 export default function Step3ContactConfirm({ booking, onChange, onSubmit, onPrev, submitting, error }) {
+  const { t } = useLanguage();
   const [consent, setConsent] = useState(true);
   const [phoneError, setPhoneError] = useState('');
 
@@ -40,20 +42,20 @@ export default function Step3ContactConfirm({ booking, onChange, onSubmit, onPre
         {/* Formulaire Coordonnées */}
         <div className="space-y-4">
           <h3 className="font-display text-lg font-bold text-white flex items-center gap-2">
-            <User className="size-4 text-primary" /> Vos coordonnées
+            <User className="size-4 text-primary" /> {t.reservation.contactTitle}
           </h3>
 
           {/* Champ Nom */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-white/90">
-              Nom complet ou prénom *
+              {t.reservation.nameLabel}
             </label>
             <div className="relative">
               <User className="absolute left-3.5 top-3.5 size-4 text-white/40" />
               <input
                 type="text"
                 required
-                placeholder="Ex : Koffi Mensah"
+                placeholder={t.reservation.namePlaceholder}
                 value={booking.nom}
                 onChange={(e) => onChange('nom', e.target.value)}
                 className="w-full rounded-2xl border border-white/15 bg-black/40 pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/30 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
@@ -64,8 +66,8 @@ export default function Step3ContactConfirm({ booking, onChange, onSubmit, onPre
           {/* Champ Téléphone Bénin */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-white/90 flex justify-between">
-              <span>Numéro WhatsApp / Téléphone * (Bénin +229)</span>
-              <span className="text-primary text-[11px]">Canal prioritaire</span>
+              <span>{t.reservation.phoneLabel}</span>
+              <span className="text-primary text-[11px]">{t.reservation.phonePriority}</span>
             </label>
             <div className="relative">
               <Phone className="absolute left-3.5 top-3.5 size-4 text-white/40" />
@@ -90,7 +92,7 @@ export default function Step3ContactConfirm({ booking, onChange, onSubmit, onPre
               <p className="text-[11px] text-red-400">{phoneError}</p>
             ) : (
               <p className="text-[11px] text-muted-foreground">
-                Format accepté : +229 90 00 56 56, 90005656, 61000000...
+                {t.reservation.phoneHint}
               </p>
             )}
           </div>
@@ -98,7 +100,7 @@ export default function Step3ContactConfirm({ booking, onChange, onSubmit, onPre
           {/* Champ E-mail (facultatif) */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-white/90">
-              Adresse e-mail <span className="text-muted-foreground font-normal">(Optionnel)</span>
+              {t.reservation.emailLabel} <span className="text-muted-foreground font-normal">{t.reservation.emailOptional}</span>
             </label>
             <div className="relative">
               <Mail className="absolute left-3.5 top-3.5 size-4 text-white/40" />
@@ -133,7 +135,7 @@ export default function Step3ContactConfirm({ booking, onChange, onSubmit, onPre
               className="mt-1 size-4 rounded accent-primary"
             />
             <span className="text-xs text-muted-foreground leading-relaxed">
-              J'accepte de recevoir la confirmation de ma réservation par WhatsApp/SMS. Aucune donnée n'est cédée à des tiers.
+              {t.reservation.consent}
             </span>
           </label>
         </div>
@@ -142,39 +144,39 @@ export default function Step3ContactConfirm({ booking, onChange, onSubmit, onPre
         <div className="flex flex-col justify-between rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
           <div className="space-y-4">
             <h3 className="font-display text-lg font-bold text-white border-b border-white/10 pb-3">
-              Récapitulatif de votre table
+              {t.reservation.summaryTitle}
             </h3>
 
             <div className="grid gap-3 text-sm">
               <div className="flex items-center justify-between py-1 border-b border-white/5">
                 <span className="text-muted-foreground flex items-center gap-1.5">
-                  <Clock className="size-3.5 text-primary" /> Date & Heure
+                  <Clock className="size-3.5 text-primary" /> {t.reservation.dateTime}
                 </span>
                 <span className="font-semibold text-white">
-                  {booking.date} à {booking.heure}
+                  {booking.date} · {booking.heure}
                 </span>
               </div>
 
               <div className="flex items-center justify-between py-1 border-b border-white/5">
                 <span className="text-muted-foreground flex items-center gap-1.5">
-                  <Users className="size-3.5 text-leaf" /> Invités
+                  <Users className="size-3.5 text-leaf" /> {t.reservation.guests}
                 </span>
                 <span className="font-semibold text-white">
-                  {booking.personnes} {booking.personnes > 1 ? 'personnes' : 'personne'}
+                  {booking.personnes} {booking.personnes > 1 ? t.reservation.guestsPlural : t.reservation.guestsSingle}
                 </span>
               </div>
 
               <div className="flex items-center justify-between py-1 border-b border-white/5">
                 <span className="text-muted-foreground flex items-center gap-1.5">
-                  <MapPin className="size-3.5 text-primary" /> Espace choisi
+                  <MapPin className="size-3.5 text-primary" /> {t.reservation.space}
                 </span>
                 <span className="font-semibold text-white">
-                  {selectedZone ? selectedZone.name : 'Non spécifié'}
+                  {selectedZone ? selectedZone.name : '—'}
                 </span>
               </div>
 
               <div className="flex items-center justify-between py-1 border-b border-white/5">
-                <span className="text-muted-foreground">Occasion</span>
+                <span className="text-muted-foreground">{t.reservation.occasion}</span>
                 <span className="font-semibold text-white">
                   {booking.occasion}
                 </span>
@@ -182,7 +184,7 @@ export default function Step3ContactConfirm({ booking, onChange, onSubmit, onPre
 
               {booking.demandes_speciales && (
                 <div className="pt-1">
-                  <span className="text-xs text-muted-foreground block mb-1">Demande spéciale :</span>
+                  <span className="text-xs text-muted-foreground block mb-1">{t.reservation.specialRequest}</span>
                   <p className="text-xs text-white/80 bg-black/30 p-2.5 rounded-xl border border-white/5">
                     « {booking.demandes_speciales} »
                   </p>
@@ -193,11 +195,11 @@ export default function Step3ContactConfirm({ booking, onChange, onSubmit, onPre
             {/* Politique claire */}
             <div className="rounded-2xl bg-primary/10 border border-primary/20 p-3.5 text-xs text-white/90 space-y-1">
               <div className="flex items-center gap-1.5 font-bold text-primary">
-                <ShieldCheck className="size-4" /> Politique de l'établissement
+                <ShieldCheck className="size-4" /> {t.reservation.policyTitle}
               </div>
               <ul className="list-disc list-inside space-y-0.5 text-muted-foreground pt-1">
-                <li>Votre table est conservée pendant <strong>15 minutes</strong> après l'heure convenue.</li>
-                <li>Annulation sans frais possible à tout moment.</li>
+                <li>{t.reservation.policyHold}</li>
+                <li>{t.reservation.policyCancel}</li>
               </ul>
             </div>
           </div>
@@ -217,12 +219,12 @@ export default function Step3ContactConfirm({ booking, onChange, onSubmit, onPre
               {submitting ? (
                 <>
                   <Loader2 className="size-5 animate-spin" />
-                  Confirmation de votre table en cours...
+                  {t.reservation.confirming}
                 </>
               ) : (
                 <>
                   <CheckCircle2 className="size-5" />
-                  Confirmer ma Réservation
+                  {t.reservation.confirmBtn}
                 </>
               )}
             </button>
@@ -238,7 +240,7 @@ export default function Step3ContactConfirm({ booking, onChange, onSubmit, onPre
           disabled={submitting}
           className="flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium text-white/80 hover:bg-white/10 transition-colors"
         >
-          <ArrowLeft className="size-4" /> Modifier l'espace
+          <ArrowLeft className="size-4" /> {t.reservation.backBtn}
         </button>
       </div>
     </div>

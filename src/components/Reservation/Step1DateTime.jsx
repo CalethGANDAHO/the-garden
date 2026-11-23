@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 import { Calendar as CalendarIcon, Clock, Users, AlertCircle, Loader2 } from 'lucide-react';
 import { getSlotAvailability } from '../../lib/reservationService';
 
 export default function Step1DateTime({ booking, onChange, onNext }) {
+  const { t } = useLanguage();
   const [availability, setAvailability] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +38,7 @@ export default function Step1DateTime({ booking, onChange, onNext }) {
         <div className="space-y-3">
           <label className="flex items-center gap-2 text-sm font-semibold text-white">
             <CalendarIcon className="size-4 text-primary" />
-            Date de réservation
+            {t.reservation.dateLabel}
           </label>
           <input
             type="date"
@@ -46,7 +48,7 @@ export default function Step1DateTime({ booking, onChange, onNext }) {
             className="w-full rounded-2xl border border-white/15 bg-black/40 px-4 py-3.5 text-sm text-white outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
           />
           <p className="text-[11px] text-muted-foreground">
-            The Garden Rooftop est ouvert 7j/7 de 18:00 à 05:00.
+            {t.reservation.dateHint}
           </p>
         </div>
 
@@ -54,7 +56,7 @@ export default function Step1DateTime({ booking, onChange, onNext }) {
         <div className="space-y-3">
           <label className="flex items-center gap-2 text-sm font-semibold text-white">
             <Users className="size-4 text-primary" />
-            Nombre de personnes ({booking.personnes} {booking.personnes > 1 ? 'convives' : 'convive'})
+            {t.reservation.guestsLabel} ({booking.personnes} {booking.personnes > 1 ? t.reservation.guestsPlural : t.reservation.guestsSingle})
           </label>
           
           <div className="flex items-center gap-4 rounded-2xl border border-white/15 bg-black/40 px-4 py-2.5">
@@ -99,7 +101,7 @@ export default function Step1DateTime({ booking, onChange, onNext }) {
             <div className="flex items-start gap-2 rounded-xl bg-amber-500/10 border border-amber-500/30 p-2.5 text-xs text-amber-300">
               <AlertCircle className="size-4 shrink-0 mt-0.5" />
               <span>
-                Grand groupe ({booking.personnes} pers.) : Une confirmation personnalisée ou un prépaiement d'acompte pourra vous être demandé par l'hôte.
+                {t.reservation.largeGroupWarning}
               </span>
             </div>
           )}
@@ -111,11 +113,11 @@ export default function Step1DateTime({ booking, onChange, onNext }) {
         <div className="flex items-center justify-between">
           <label className="flex items-center gap-2 text-sm font-semibold text-white">
             <Clock className="size-4 text-primary" />
-            Créneau d'arrivée souhaité
+            {t.reservation.timeSlotLabel}
           </label>
           {loading && (
             <span className="flex items-center gap-1.5 text-xs text-primary animate-pulse">
-              <Loader2 className="size-3 animate-spin" /> Vérification des tables...
+              <Loader2 className="size-3 animate-spin" /> {t.reservation.checkingTables}
             </span>
           )}
         </div>
@@ -145,14 +147,14 @@ export default function Step1DateTime({ booking, onChange, onNext }) {
                 <span className={`mt-1 text-[10px] tracking-wide uppercase font-semibold ${
                   !isAvailable ? 'text-red-400/80' : isSelected ? 'text-primary' : 'text-leaf'
                 }`}>
-                  {!isAvailable ? slot.reason : `${slot.remainingGuests} places`}
+                  {!isAvailable ? slot.reason : `${slot.remainingGuests} ${t.reservation.placesRemaining}`}
                 </span>
               </button>
             );
           })}
         </div>
         <p className="text-[11px] text-muted-foreground">
-          ⏱️ Chaque réservation garantit la disponibilité de votre table pour une durée standard de <strong>2 heures</strong>.
+          ⏱️ {t.reservation.standardDuration}
         </p>
       </div>
 
@@ -168,7 +170,7 @@ export default function Step1DateTime({ booking, onChange, onNext }) {
               : 'cursor-not-allowed bg-white/10 text-white/30'
           }`}
         >
-          Étape suivante : Espace & Occasion →
+          {t.reservation.nextStepSpace}
         </button>
       </div>
     </div>

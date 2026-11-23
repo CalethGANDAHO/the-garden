@@ -1,8 +1,11 @@
 import React from 'react';
 import { MapPin, Clock, Phone, Utensils, Car, Truck, ParkingCircle, CreditCard, Accessibility } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 import InstagramIcon from './icons/InstagramIcon';
 
 export default function Footer() {
+  const { t } = useLanguage();
+
   const serviceBadges = [
     { icon: Utensils, label: "Sur place" },
     { icon: Car, label: "Drive" },
@@ -34,7 +37,7 @@ export default function Footer() {
             Rooftop · Bar · Restaurant
           </p>
           <p className="mt-4 max-w-xs text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            Un rooftop d'exception au cœur de Cotonou où les grillades savoureuses, le jardin suspendu et la magie de la nuit se rencontrent.
+            {t.footer.desc}
           </p>
         </div>
 
@@ -46,7 +49,7 @@ export default function Footer() {
           </li>
           <li className="flex items-start gap-3">
             <Clock className="mt-0.5 size-4 shrink-0 text-primary" />
-            <span>Tous les jours · 18:00 — 05:00</span>
+            <span>{t.location.hoursVal}</span>
           </li>
           <li className="flex items-start gap-3">
             <Phone className="mt-0.5 size-4 shrink-0 text-primary" />
@@ -68,13 +71,13 @@ export default function Footer() {
           className="glass lift grid h-fit place-items-center rounded-3xl border border-white/10 p-6 text-center group hover:border-primary/50 transition-colors"
         >
           <span className="font-display text-xl sm:text-2xl font-bold text-white group-hover:text-primary transition-colors">
-            Réservez votre ambiance
+            {t.footer.ctaTitle}
           </span>
           <span className="mt-2 text-xs text-muted-foreground">
-            Rooftop plein ciel, salon privé ou comptoir lounge — en trois clics.
+            {t.footer.ctaDesc}
           </span>
           <span className="mt-4 rounded-full bg-primary/20 border border-primary/30 px-4 py-1.5 text-xs font-semibold text-primary">
-            Choisir une table →
+            {t.footer.ctaBtn}
           </span>
         </a>
       </div>
@@ -95,7 +98,7 @@ export default function Footer() {
           </div>
 
           <div className="text-[11px] text-white/40">
-            © {new Date().getFullYear()} The Garden Rooftop Cotonou. Tous droits réservés.
+            © {new Date().getFullYear()} {t.footer.rights}
           </div>
         </div>
       </div>

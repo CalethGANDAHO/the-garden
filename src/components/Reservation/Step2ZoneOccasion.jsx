@@ -1,15 +1,18 @@
 import React from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 import { zones } from '../../data/zonesData';
 import { OCCASIONS } from '../../lib/reservationService';
 import { ArrowLeft, Sparkles, MessageSquare } from 'lucide-react';
 
 export default function Step2ZoneOccasion({ booking, onChange, onNext, onPrev }) {
+  const { t } = useLanguage();
+
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* 1. Choix de la zone */}
       <div className="space-y-4">
         <label className="block text-sm font-semibold text-white">
-          1. Choisissez votre espace préféré
+          {t.reservation.spaceLabel}
         </label>
         
         <div className="grid gap-4 md:grid-cols-3">
@@ -37,7 +40,7 @@ export default function Step2ZoneOccasion({ booking, onChange, onNext, onPrev })
                   
                   {isSelected && (
                     <span className="absolute top-3 right-3 rounded-full bg-primary px-3 py-1 text-[11px] font-bold text-slate-950 shadow-md">
-                      ✓ Sélectionné
+                      {t.reservation.selected}
                     </span>
                   )}
                 </div>
@@ -72,7 +75,7 @@ export default function Step2ZoneOccasion({ booking, onChange, onNext, onPrev })
         <div className="space-y-3">
           <label className="flex items-center gap-2 text-sm font-semibold text-white">
             <Sparkles className="size-4 text-leaf" />
-            Occasion de la visite
+            {t.reservation.occasionLabel}
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {OCCASIONS.map((occ) => (
@@ -96,13 +99,13 @@ export default function Step2ZoneOccasion({ booking, onChange, onNext, onPrev })
         <div className="space-y-3">
           <label className="flex items-center gap-2 text-sm font-semibold text-white">
             <MessageSquare className="size-4 text-primary" />
-            Demandes particulières (Optionnel)
+            {t.reservation.specialRequestsLabel}
           </label>
           <textarea
             rows={4}
             value={booking.demandes_speciales}
             onChange={(e) => onChange('demandes_speciales', e.target.value)}
-            placeholder="Ex : Table près du DJ, précommande de champagne, bouteille de vin, allergies, gâteau d'anniversaire..."
+            placeholder={t.reservation.specialRequestsPlaceholder}
             className="w-full resize-none rounded-2xl border border-white/15 bg-black/40 p-3.5 text-xs text-white placeholder:text-white/30 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>
@@ -115,14 +118,14 @@ export default function Step2ZoneOccasion({ booking, onChange, onNext, onPrev })
           onClick={onPrev}
           className="flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium text-white/80 hover:bg-white/10 transition-colors"
         >
-          <ArrowLeft className="size-4" /> Retour
+          <ArrowLeft className="size-4" /> {t.reservation.backBtn}
         </button>
         <button
           type="button"
           onClick={onNext}
           className="flex items-center gap-2 rounded-full bg-gradient-to-r from-leaf to-primary px-7 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
         >
-          Étape suivante : Coordonnées & Confirmation →
+          {t.reservation.nextStepContact}
         </button>
       </div>
     </div>

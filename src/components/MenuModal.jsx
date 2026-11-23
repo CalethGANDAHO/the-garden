@@ -1,8 +1,10 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { X, Sparkles, Calendar, Check } from 'lucide-react';
 import { formatPrice } from '../lib/utils';
 
 export default function MenuModal({ item, onClose, onSelectForBooking }) {
+  const { t } = useLanguage();
   if (!item) return null;
 
   return (
@@ -44,7 +46,7 @@ export default function MenuModal({ item, onClose, onSelectForBooking }) {
         {/* Ingrédients & Action */}
         <div className="p-6">
           <h4 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase mb-3">
-            Ingrédients & Préparation
+            {t.menu.ingredientsTitle}
           </h4>
           <div className="flex flex-wrap gap-2 mb-6">
             {item.ingredients.map((ing, i) => (
@@ -65,7 +67,7 @@ export default function MenuModal({ item, onClose, onSelectForBooking }) {
             className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-leaf to-primary py-3.5 px-6 text-sm font-semibold text-slate-950 shadow-lg shadow-primary/20 transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98]"
           >
             <Calendar className="size-4" />
-            Réserver une table pour déguster ce plat
+            {t.menu.bookForDish}
           </button>
         </div>
       </div>

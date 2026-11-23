@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useVibe } from '../context/VibeContext';
-import { Sun, Moon, Calendar, Lock } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+import { Sun, Moon, Calendar, Lock, Globe } from 'lucide-react';
 
 export default function Navbar({ onOpenAdmin }) {
   const { vibe, toggleVibe } = useVibe();
+  const { language, setLanguage, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,19 +19,25 @@ export default function Navbar({ onOpenAdmin }) {
   }, []);
 
   const navLinks = [
-    { href: '#menu', label: 'Menu' },
-    { href: '#reserve', label: 'Réserver' },
-    { href: '#events', label: 'Événements' },
-    { href: '#atmosphere', label: 'Ambiance' },
-    { href: '#location', label: 'Accès' },
+    { href: '#menu', label: t.nav.menu },
+    { href: '#reserve', label: t.nav.reserve },
+    { href: '#events', label: t.nav.events },
+    { href: '#atmosphere', label: t.nav.atmosphere },
+    { href: '#location', label: t.nav.location },
+  ];
+
+  const languages = [
+    { code: 'fr', label: 'FR', name: 'Français' },
+    { code: 'en', label: 'EN', name: 'English' },
+    { code: 'yo', label: 'YO', name: 'Yorùbá' }
   ];
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled ? 'py-2' : 'py-4'}`}>
-      <nav className={`mx-auto flex max-w-6xl items-center justify-between px-5 py-3 transition-all duration-500 sm:px-8 ${
+      <nav className={`mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-8 py-3 transition-all duration-500 ${
         scrolled
-          ? 'rounded-2xl bg-black/75 backdrop-blur-xl ring-1 ring-white/10 shadow-lg'
-          : 'bg-transparent'
+          ? 'rounded-2xl bg-black/80 backdrop-blur-xl ring-1 ring-white/10 shadow-xl'
+          : 'bg-black/30 backdrop-blur-sm sm:bg-transparent'
       }`}>
         {/* Logo */}
         <a href="#top" className="flex items-center gap-2.5 group">
@@ -39,54 +48,91 @@ export default function Navbar({ onOpenAdmin }) {
             <span className="font-display text-sm font-bold tracking-tight text-white group-hover:text-primary transition-colors">
               The Garden
             </span>
-            <span className="text-[9px] tracking-[0.28em] text-white/60 uppercase">
+            <span className="text-[9px] tracking-[0.28em] text-white/70 uppercase">
               Rooftop · Bar · Bistro
             </span>
           </div>
         </a>
 
         {/* Liens Desktop */}
-        <div className="hidden md:flex items-center gap-7">
+        <div className="hidden lg:flex items-center gap-6">
           {navLinks.map(link => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-white/80 hover:text-primary transition-colors tracking-wide"
+              className="text-sm font-medium text-white/85 hover:text-primary transition-colors tracking-wide"
             >
               {link.label}
             </a>
           ))}
         </div>
 
-        {/* Actions à droite */}
-        <div className="flex items-center gap-2.5">
+        {/* Actions à droite : Sélecteur Langue + Réserver + Switch Vibe + Admin */}
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          {/* Sélecteur de Langue (FR | EN | YO) */}
+          <div className="relative">
+            <button
+              onClick={() => setLangMenuOpen(!langMenuOpen)}
+              className="flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1.5 text-xs font-bold text-white hover:border-primary/50 transition-all"
+              title="Choisir la langue / Select language / Yan èdè"
+            >
+              <Globe className="size-3.5 text-leaf" />
+              <span className="uppercase">{language}</span>
+            </button>
+
+            {langMenuOpen && (
+              <div 
+                className="absolute right-0 mt-2 w-36 rounded-2xl border border-white/15 bg-black/90 p-1.5 shadow-2xl backdrop-blur-xl z-50 animate-in fade-in zoom-in-95"
+                onMouseLeave={() => setLangMenuOpen(false)}
+              >
+                {languages.map(l => (
+                  <button
+                    key={l.code}
+                    onClick={() => {
+                      setLanguage(l.code);
+                      setLangMenuOpen(false);
+                    }}
+                    className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition-colors ${
+                      language === l.code
+                        ? 'bg-primary text-slate-950 font-bold'
+                        : 'text-white/80 hover:bg-white/10 hover:text-white'
+                    }`}
+                  >
+                    <span>{l.name}</span>
+                    <span className="text-[10px] opacity-75">{l.label}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Bouton Réserver Rapide Desktop */}
           <a
             href="#reserve"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-leaf to-primary px-4 py-1.5 text-xs font-semibold text-slate-950 shadow-md shadow-primary/20 transition-transform hover:scale-105 active:scale-95"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-leaf to-primary px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-md shadow-primary/20 transition-transform hover:scale-105 active:scale-95"
           >
             <Calendar className="size-3.5" />
-            Réserver
+            {t.nav.bookBtn}
           </a>
 
           {/* Switch Jour / Nuit */}
           <button
             onClick={toggleVibe}
             aria-label="Basculer entre le mode jour et nuit"
-            className="flex items-center gap-1 rounded-full border border-white/20 bg-black/40 p-1 backdrop-blur-sm transition-colors hover:border-white/40"
+            className="flex items-center gap-1 rounded-full border border-white/20 bg-black/50 p-1 backdrop-blur-sm transition-colors hover:border-white/40"
             title="Changer l'ambiance Jour / Nuit"
           >
-            <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-all duration-300 ${
+            <span className={`flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium transition-all duration-300 ${
               vibe === 'day' ? 'bg-white/20 text-white font-semibold' : 'text-white/45'
             }`}>
               <Sun className="size-3.5 text-yellow-400" />
-              <span className="hidden sm:inline">Jour</span>
+              <span className="hidden md:inline">{t.nav.day}</span>
             </span>
-            <span className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-all duration-300 ${
+            <span className={`flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium transition-all duration-300 ${
               vibe === 'night' ? 'bg-primary text-slate-950 font-semibold shadow-sm' : 'text-white/45'
             }`}>
               <Moon className="size-3.5" />
-              <span className="hidden sm:inline">Nuit</span>
+              <span className="hidden md:inline">{t.nav.night}</span>
             </span>
           </button>
 

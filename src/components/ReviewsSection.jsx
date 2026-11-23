@@ -1,8 +1,11 @@
 import React from 'react';
 import { restaurantReviews } from '../data/reviewsData';
+import { useLanguage } from '../context/LanguageContext';
 import { Star, CheckCircle, MessageSquare } from 'lucide-react';
 
 export default function ReviewsSection() {
+  const { t } = useLanguage();
+
   return (
     <section className="py-20 border-t border-white/5 bg-black/20">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
@@ -10,10 +13,10 @@ export default function ReviewsSection() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
             <span className="text-xs font-bold tracking-[0.3em] text-primary uppercase flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-leaf" /> Expérience Client
+              <span className="size-1.5 rounded-full bg-leaf" /> {t.reviews.tag}
             </span>
             <h2 className="mt-2 text-3xl sm:text-4xl font-display font-extrabold text-white">
-              Avis & Témoignages Vérifiés
+              {t.reviews.title}
             </h2>
           </div>
 
@@ -31,9 +34,9 @@ export default function ReviewsSection() {
               </div>
             </div>
             <div className="text-xs">
-              <span className="font-bold text-white block">Note Google Maps</span>
-              <span className="text-muted-foreground">{restaurantReviews.totalReviews} avis de clients</span>
-              <span className="text-[10px] text-leaf block mt-0.5 font-medium">Prix moyen : {restaurantReviews.priceRange}</span>
+              <span className="font-bold text-white block">{t.reviews.googleRating}</span>
+              <span className="text-muted-foreground">{restaurantReviews.totalReviews} {t.reviews.verifiedReviews}</span>
+              <span className="text-[10px] text-leaf block mt-0.5 font-medium">{t.reviews.priceRange}</span>
             </div>
           </div>
         </div>

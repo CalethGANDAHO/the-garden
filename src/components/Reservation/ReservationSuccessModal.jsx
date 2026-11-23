@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { CheckCircle2, MessageCircle, Calendar, Clock, MapPin, Users, Copy, Check, QrCode } from 'lucide-react';
 import { generateWhatsAppClientLink, formatDateFR } from '../../lib/reservationService';
+import { useLanguage } from '../../context/LanguageContext';
 import DigitalPassModal from './DigitalPassModal';
 
 export default function ReservationSuccessModal({ reservation, onClose }) {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [showPass, setShowPass] = useState(false);
 
@@ -44,17 +46,19 @@ export default function ReservationSuccessModal({ reservation, onClose }) {
           </div>
 
           <h3 className="mt-5 font-display text-2xl sm:text-3xl font-extrabold text-white">
-            Table Confirmée avec Succès !
+            {t.reservation.passModalTitle}
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Merci <strong className="text-white">{reservation.nom}</strong>, votre table est bien enregistrée.
+            {t.reservation.passModalSub.includes('votre') || t.reservation.passModalSub.includes('your') || t.reservation.passModalSub.includes('tábìlì')
+              ? `${reservation.nom}, ${t.reservation.passModalSub}`
+              : `${reservation.nom} · ${t.reservation.passModalSub}`}
           </p>
 
           {/* Numéro de réservation */}
           <div className="mt-5 flex items-center justify-between rounded-2xl border border-primary/30 bg-primary/10 px-4 py-3">
             <div className="text-left">
               <span className="text-[10px] tracking-widest text-primary uppercase font-bold block">
-                Numéro de Réservation
+                {t.reservation.refLabel}
               </span>
               <span className="font-display text-lg font-black tracking-wider text-white">
                 {reservation.reference}
@@ -66,7 +70,7 @@ export default function ReservationSuccessModal({ reservation, onClose }) {
               title="Copier le numéro"
             >
               {copied ? <Check className="size-3.5 text-leaf" /> : <Copy className="size-3.5" />}
-              {copied ? 'Copié' : 'Copier'}
+              {copied ? '✓' : 'Copy'}
             </button>
           </div>
 
@@ -82,7 +86,7 @@ export default function ReservationSuccessModal({ reservation, onClose }) {
             </div>
             <div className="flex items-center gap-2 text-white/90">
               <Users className="size-3.5 text-leaf" />
-              <span>{reservation.personnes} pers.</span>
+              <span>{reservation.personnes} {reservation.personnes > 1 ? t.reservation.guestsPlural : t.reservation.guestsSingle}</span>
             </div>
             <div className="flex items-center gap-2 text-white/90 truncate">
               <MapPin className="size-3.5 text-primary" />
@@ -98,7 +102,7 @@ export default function ReservationSuccessModal({ reservation, onClose }) {
               className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-leaf to-primary py-3.5 px-6 text-sm font-bold text-slate-950 shadow-lg shadow-primary/25 transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               <QrCode className="size-5" />
-              Afficher mon Pass Numérique VIP (QR Code)
+              {t.reservation.digitalPassBtn}
             </button>
 
             {/* Bouton WhatsApp */}
@@ -109,18 +113,18 @@ export default function ReservationSuccessModal({ reservation, onClose }) {
               className="flex w-full items-center justify-center gap-2.5 rounded-full bg-[#25D366] py-3 px-6 text-xs sm:text-sm font-bold text-white shadow-md shadow-[#25D366]/20 transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               <MessageCircle className="size-4.5 fill-white" />
-              Envoyer la confirmation au restaurant sur WhatsApp
+              {t.reservation.sendWhatsAppBtn}
             </a>
 
             <p className="text-[11px] text-muted-foreground leading-relaxed">
-              Conservez votre Pass sur votre portable pour le présenter à l'arrivée. Votre table est garantie 15 minutes.
+              {t.reservation.passHeldHint}
             </p>
 
             <button
               onClick={onClose}
               className="w-full rounded-full border border-white/15 bg-white/5 py-2.5 text-xs font-semibold text-white/80 hover:bg-white/10 transition-colors"
             >
-              Fermer et retourner au site
+              {t.pass.closeBtn}
             </button>
           </div>
         </div>

@@ -1,8 +1,11 @@
 import React from 'react';
 import { galleryPhotos } from '../data/galleryData';
+import { useLanguage } from '../context/LanguageContext';
 import InstagramIcon from './icons/InstagramIcon';
 
 export default function AtmosphereGallery() {
+  const { t } = useLanguage();
+
   return (
     <section id="atmosphere" className="py-20 border-t border-white/5">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
@@ -15,14 +18,14 @@ export default function AtmosphereGallery() {
               rel="noopener noreferrer"
               className="text-xs font-bold tracking-[0.3em] text-primary uppercase flex items-center gap-1.5 hover:underline"
             >
-              <InstagramIcon className="size-3.5" /> @thegarden.cotonou
+              <InstagramIcon className="size-3.5" /> {t.atmosphere.tag}
             </a>
             <h2 className="mt-2 text-3xl sm:text-5xl font-display font-extrabold tracking-tight text-white">
-              En direct du jardin
+              {t.atmosphere.title}
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground max-w-sm">
-            L'énergie des soirées, les sourires et les vibrations partagées sous la voûte céleste.
+            {t.atmosphere.desc}
           </p>
         </div>
 

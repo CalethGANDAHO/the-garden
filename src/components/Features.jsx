@@ -1,27 +1,30 @@
 import React from 'react';
 import { Accessibility, Sparkles, Wine, CreditCard } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Features() {
+  const { t } = useLanguage();
+
   const items = [
     {
       icon: Accessibility,
-      title: "Accessibilité",
-      desc: "Entrée & Toilettes accessibles aux personnes en fauteuil roulant (PMR)."
+      title: t.features.accessibility.title,
+      desc: t.features.accessibility.desc
     },
     {
       icon: Sparkles,
-      title: "Ambiance",
-      desc: "Toit-terrasse panoramique, Happy Hour, Musique Live, Karaoké & Salle VIP."
+      title: t.features.atmosphere.title,
+      desc: t.features.atmosphere.desc
     },
     {
       icon: Wine,
-      title: "Boissons",
-      desc: "Cocktails Signatures, Vins Fins de garde & Bières fraîches locales et importées."
+      title: t.features.drinks.title,
+      desc: t.features.drinks.desc
     },
     {
       icon: CreditCard,
-      title: "Parking & Paiement",
-      desc: "Paiements mobiles NFC acceptés, stationnement facile et parking gratuit dans la rue."
+      title: t.features.parking.title,
+      desc: t.features.parking.desc
     }
   ];
 

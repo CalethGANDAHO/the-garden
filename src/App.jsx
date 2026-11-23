@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { VibeProvider } from './context/VibeContext';
+import { LanguageProvider } from './context/LanguageContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Menu from './components/Menu';
@@ -28,50 +29,52 @@ export default function App() {
   };
 
   return (
-    <VibeProvider>
-      <div className="min-h-screen overflow-x-hidden bg-background text-foreground transition-colors duration-500">
-        {/* Navigation principale */}
-        <Navbar onOpenAdmin={() => setIsAdminOpen(true)} />
+    <LanguageProvider>
+      <VibeProvider>
+        <div className="min-h-screen overflow-x-hidden bg-background text-foreground transition-colors duration-500">
+          {/* Navigation principale */}
+          <Navbar onOpenAdmin={() => setIsAdminOpen(true)} />
 
-        {/* Contenu principal */}
-        <main>
-          {/* 1. Hero plein écran */}
-          <Hero />
+          {/* Contenu principal */}
+          <main>
+            {/* 1. Hero plein écran */}
+            <Hero />
 
-          {/* 2. Menu avec filtres et modal ingrédients */}
-          <Menu onSelectDishForReservation={handleSelectDishForReservation} />
+            {/* 2. Menu avec filtres et modal ingrédients */}
+            <Menu onSelectDishForReservation={handleSelectDishForReservation} />
 
-          {/* 3. Module de Réservation haut de gamme en 3 étapes */}
-          <ReservationSection preselectedDish={preselectedDish} />
+            {/* 3. Module de Réservation haut de gamme en 3 étapes */}
+            <ReservationSection preselectedDish={preselectedDish} />
 
-          {/* 4. Événements de la semaine */}
-          <Events />
+            {/* 4. Événements de la semaine */}
+            <Events />
 
-          {/* 5. Galerie photos Ambiance Instagram */}
-          <AtmosphereGallery />
+            {/* 5. Galerie photos Ambiance Instagram */}
+            <AtmosphereGallery />
 
-          {/* 6. Avis clients vérifiés Google Maps */}
-          <ReviewsSection />
+            {/* 6. Avis clients vérifiés Google Maps */}
+            <ReviewsSection />
 
-          {/* 7. Atouts & Engagements (PMR, Ambiance, Boissons, Parking) */}
-          <Features />
+            {/* 7. Atouts & Engagements (PMR, Ambiance, Boissons, Parking) */}
+            <Features />
 
-          {/* 8. Localisation & Horaires Google Maps */}
-          <LocationAccess />
-        </main>
+            {/* 8. Localisation & Horaires Google Maps */}
+            <LocationAccess />
+          </main>
 
-        {/* Footer enrichi */}
-        <Footer />
+          {/* Footer enrichi */}
+          <Footer />
 
-        {/* Navigation fixe mobile (écrans < lg) */}
-        <MobileBottomNav />
+          {/* Navigation fixe mobile (écrans < lg) */}
+          <MobileBottomNav />
 
-        {/* Bouton flottant WhatsApp toujours disponible */}
-        <FloatingWhatsApp />
+          {/* Bouton flottant WhatsApp toujours disponible */}
+          <FloatingWhatsApp />
 
-        {/* Modale d'administration restaurateur protégée */}
-        <AdminModal isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} />
-      </div>
-    </VibeProvider>
+          {/* Modale d'administration restaurateur protégée */}
+          <AdminModal isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} />
+        </div>
+      </VibeProvider>
+    </LanguageProvider>
   );
 }

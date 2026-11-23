@@ -1,12 +1,15 @@
 import React from 'react';
 import { Utensils, Calendar, Music, Phone } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function MobileBottomNav() {
+  const { t } = useLanguage();
+
   const items = [
-    { href: '#menu', label: 'Menu', icon: Utensils },
-    { href: '#reserve', label: 'Table', icon: Calendar },
-    { href: '#events', label: 'Sorties', icon: Music },
-    { href: 'tel:+22990005656', label: 'Appeler', icon: Phone },
+    { href: '#menu', label: t.nav.menu, icon: Utensils },
+    { href: '#reserve', label: t.nav.reserve, icon: Calendar },
+    { href: '#events', label: t.nav.events, icon: Music },
+    { href: 'tel:+22990005656', label: t.location.phoneLabel || 'Appeler', icon: Phone },
   ];
 
   return (

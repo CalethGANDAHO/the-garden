@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 import Step1DateTime from './Step1DateTime';
 import Step2ZoneOccasion from './Step2ZoneOccasion';
 import Step3ContactConfirm from './Step3ContactConfirm';
@@ -8,6 +9,7 @@ import { createReservation, generateWhatsAppFallbackLink } from '../../lib/reser
 import { MessageCircle, Search, ShieldCheck } from 'lucide-react';
 
 export default function ReservationSection({ preselectedDish }) {
+  const { t } = useLanguage();
   const [step, setStep] = useState(0); // 0: Date/Heure, 1: Zone/Occasion, 2: Coordonnées
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -69,12 +71,12 @@ export default function ReservationSection({ preselectedDish }) {
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
           <div className="min-w-0">
             <span className="text-xs font-bold tracking-[0.3em] text-primary uppercase flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-leaf" /> Réservation en Ligne
+              <span className="size-1.5 rounded-full bg-leaf" /> {t.reservation.tag}
             </span>
             <h2 className="mt-2 text-2xl sm:text-4xl font-display font-extrabold tracking-tight text-white">
-              {step === 0 && "Date, Couverts & Créneau"}
-              {step === 1 && "Espace Préféré & Occasion"}
-              {step === 2 && "Coordonnées & Confirmation"}
+              {step === 0 && t.reservation.step1Title}
+              {step === 1 && t.reservation.step2Title}
+              {step === 2 && t.reservation.step3Title}
             </h2>
           </div>
 
@@ -84,10 +86,10 @@ export default function ReservationSection({ preselectedDish }) {
               className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs text-white/80 hover:bg-white/10 transition-colors"
               title="Retrouver une réservation existante"
             >
-              <Search className="size-3.5 text-primary" /> Gérer ma table
+              <Search className="size-3.5 text-primary" /> {t.reservation.manageBtn}
             </button>
             <span className="shrink-0 rounded-full bg-secondary px-3.5 py-1.5 text-xs font-semibold text-primary">
-              Étape {step + 1} / 3
+              {t.reservation.stepIndicator} {step + 1} / 3
             </span>
           </div>
         </div>
@@ -135,7 +137,7 @@ export default function ReservationSection({ preselectedDish }) {
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 pt-6">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <ShieldCheck className="size-4 text-leaf shrink-0" />
-            <span>Aucun paiement exigé en ligne · Confirmation instantanée par WhatsApp</span>
+            <span>{t.reservation.freeBookingHint}</span>
           </div>
 
           <a
@@ -145,7 +147,7 @@ export default function ReservationSection({ preselectedDish }) {
             className="flex items-center gap-2 text-xs font-semibold text-leaf hover:underline"
           >
             <MessageCircle className="size-4 fill-leaf text-slate-950" />
-            Besoin d'aide ? Réserver directement par WhatsApp →
+            {t.reservation.whatsappDirect}
           </a>
         </div>
       </div>
