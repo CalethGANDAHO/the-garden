@@ -8,27 +8,27 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: 'oklch(17% 0.024 235)',
-        foreground: 'oklch(96% 0.008 200)',
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
         primary: {
-          DEFAULT: '#22d3ee',
-          foreground: '#0b1320',
+          DEFAULT: 'var(--primary)',
+          foreground: 'var(--primary-foreground)',
         },
-        leaf: '#4ade80',
-        neon: '#22d3ee',
+        leaf: 'var(--leaf)',
+        neon: 'var(--neon)',
         secondary: {
-          DEFAULT: 'oklch(28% 0.03 235)',
-          foreground: 'oklch(95% 0.01 200)',
+          DEFAULT: 'var(--secondary)',
+          foreground: 'var(--secondary-foreground)',
         },
         muted: {
-          DEFAULT: 'oklch(26% 0.025 235)',
-          foreground: 'oklch(72% 0.02 220)',
+          DEFAULT: 'var(--muted)',
+          foreground: 'var(--muted-foreground)',
         },
         accent: {
-          DEFAULT: 'oklch(74% 0.14 65)',
-          foreground: '#0f172a',
+          DEFAULT: 'var(--accent)',
+          foreground: 'var(--accent-foreground)',
         },
-        border: 'oklch(34% 0.03 225)',
+        border: 'var(--border)',
       },
       fontFamily: {
         display: ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],

@@ -6,52 +6,66 @@
   --font-display-family: "Montserrat", ui-sans-serif, system-ui, sans-serif;
   --font-body-family: "Inter", ui-sans-serif, system-ui, sans-serif;
   --radius: 1rem;
-  --background: oklch(17% 0.024 235);
-  --foreground: oklch(96% 0.008 200);
-  --card: oklch(22% 0.026 235);
-  --card-foreground: oklch(96% 0.008 200);
-  --popover: oklch(20% 0.026 235);
-  --popover-foreground: oklch(96% 0.008 200);
-  --primary: oklch(82% 0.13 195);
-  --primary-foreground: oklch(17% 0.03 235);
-  --secondary: oklch(28% 0.03 235);
-  --secondary-foreground: oklch(95% 0.01 200);
-  --muted: oklch(26% 0.025 235);
-  --muted-foreground: oklch(72% 0.02 220);
-  --accent: oklch(74% 0.14 65);
-  --accent-foreground: oklch(18% 0.03 60);
-  --destructive: oklch(60% 0.22 25);
-  --destructive-foreground: oklch(98% 0 0);
-  --border: oklch(34% 0.03 225);
-  --input: oklch(30% 0.03 225);
-  --ring: oklch(82% 0.13 195);
+  --background: #080d1a;
+  --foreground: #f8fafc;
+  --card: rgba(13, 20, 36, 0.7);
+  --card-foreground: #f8fafc;
+  --popover: #0b1320;
+  --popover-foreground: #f8fafc;
+  --primary: #22d3ee;
+  --primary-foreground: #020617;
+  --secondary: #131d2e;
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #fbbf24;
+  --accent-foreground: #0f172a;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #22d3ee;
   --neon: #22d3ee;
   --leaf: #4ade80;
-  --wood: oklch(58% 0.09 60);
-  --glass: oklch(28% 0.03 235 / 0.45);
-  --glass-border: oklch(95% 0.02 200 / 0.16);
-  --gradient-hero: linear-gradient(to top, oklch(10% 0.02 235 / 0.92) 0%, oklch(12% 0.02 235 / 0.4) 50%, transparent 100%);
+  --wood: #a16207;
+  --glass: rgba(13, 22, 38, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --gradient-hero: linear-gradient(to top, rgba(8, 13, 26, 0.95) 0%, rgba(8, 13, 26, 0.3) 50%, transparent 100%);
   --gradient-neon: linear-gradient(90deg, #4ade80, #22d3ee);
-  --shadow-glow: 0 0 0 1px var(--glass-border), 0 24px 60px -20px oklch(85% 0.15 197 / 0.35);
-  --shadow-soft: 0 20px 50px -24px oklch(5% 0.02 235 / 0.85);
+  --shadow-glow: 0 0 25px rgba(34, 211, 238, 0.35);
+  --shadow-soft: 0 20px 50px -20px rgba(0, 0, 0, 0.8);
   --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html.day {
-  --background: oklch(98% 0.005 240);
-  --foreground: oklch(15% 0.03 240);
-  --card: oklch(100% 0 0);
-  --card-foreground: oklch(15% 0.03 240);
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
   --primary: #0284c7;
   --primary-foreground: #ffffff;
-  --secondary: oklch(92% 0.01 240);
-  --secondary-foreground: oklch(15% 0.03 240);
-  --muted: oklch(92% 0.01 240);
-  --muted-foreground: oklch(45% 0.02 240);
-  --border: oklch(88% 0.01 240);
-  --glass: oklch(100% 0 0 / 0.7);
-  --glass-border: oklch(0% 0 0 / 0.08);
-  --gradient-neon: linear-gradient(90deg, #059669, #0284c7);
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #e2e8f0;
+  --muted-foreground: #475569;
+  --accent: #d97706;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: rgba(15, 23, 42, 0.12);
+  --input: rgba(15, 23, 42, 0.15);
+  --ring: #0284c7;
+  --neon: #0284c7;
+  --leaf: #16a34a;
+  --wood: #b45309;
+  --glass: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(15, 23, 42, 0.09);
+  --gradient-hero: linear-gradient(to top, rgba(248, 250, 252, 0.95) 0%, rgba(248, 250, 252, 0.25) 50%, transparent 100%);
+  --gradient-neon: linear-gradient(90deg, #d97706, #059669);
+  --shadow-glow: 0 0 25px rgba(2, 132, 199, 0.2);
+  --shadow-soft: 0 15px 35px -10px rgba(15, 23, 42, 0.08);
 }
 
 body {
@@ -104,6 +118,123 @@ body {
 /* Hero Veil Gradient */
 .hero-veil {
   background: var(--gradient-hero);
+}
+
+/* Nuances Visuelles Majeures Mode Jour (☀️ Day Vibe) */
+html.day {
+  color-scheme: light;
+}
+
+html.day body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Glassmorphism lumineux et nacré en mode Jour */
+html.day .glass {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 12px 36px -10px rgba(15, 23, 42, 0.07) !important;
+  color: #0f172a !important;
+}
+
+html.day .glass:hover {
+  border-color: var(--primary) !important;
+}
+
+/* Adaptation automatique des textes sombres pour lisibilité parfaite en Mode Jour */
+html.day section:not(#top) .text-white,
+html.day footer .text-white,
+html.day header .text-white,
+html.day [role="dialog"] .text-white {
+  color: #0f172a !important;
+}
+
+html.day section:not(#top) .text-white\/90,
+html.day section:not(#top) .text-white\/85,
+html.day section:not(#top) .text-white\/80,
+html.day footer .text-white\/90,
+html.day footer .text-white\/80,
+html.day header .text-white\/85,
+html.day [role="dialog"] .text-white\/90 {
+  color: #1e293b !important;
+}
+
+html.day section:not(#top) .text-white\/70,
+html.day section:not(#top) .text-white\/60,
+html.day footer .text-white\/70,
+html.day header .text-white\/70,
+html.day [role="dialog"] .text-white\/60 {
+  color: #475569 !important;
+}
+
+html.day section:not(#top) .text-white\/50,
+html.day section:not(#top) .text-white\/45,
+html.day section:not(#top) .text-white\/40,
+html.day footer .text-white\/40,
+html.day [role="dialog"] .text-white\/50 {
+  color: #64748b !important;
+}
+
+html.day section:not(#top) .text-muted-foreground,
+html.day footer .text-muted-foreground {
+  color: #475569 !important;
+}
+
+/* Bordures adaptées au mode Jour */
+html.day section:not(#top) .border-white\/5,
+html.day section:not(#top) .border-white\/10,
+html.day section:not(#top) .border-white\/15,
+html.day section:not(#top) .border-white\/20,
+html.day section:not(#top) .border-white\/25,
+html.day section:not(#top) .border-white\/30,
+html.day footer .border-white\/5,
+html.day footer .border-white\/10,
+html.day [role="dialog"] .border-white\/5,
+html.day [role="dialog"] .border-white\/10,
+html.day [role="dialog"] .border-white\/15 {
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+/* Remplacement des aplats sombres par des teintes claires et fraîches */
+html.day section:not(#top) .bg-black\/20,
+html.day section:not(#top) .bg-black\/30,
+html.day section:not(#top) .bg-black\/40,
+html.day section:not(#top) .bg-black\/50,
+html.day section:not(#top) .bg-black\/70,
+html.day footer .bg-black\/20,
+html.day footer .bg-black\/40,
+html.day [role="dialog"] .bg-black\/40,
+html.day [role="dialog"] .bg-black\/30 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+html.day section:not(#top) .bg-white\/5,
+html.day section:not(#top) .bg-white\/10,
+html.day [role="dialog"] .bg-white\/5,
+html.day [role="dialog"] .bg-white\/10 {
+  background-color: #f1f5f9 !important;
+}
+
+html.day section:not(#top) .bg-secondary\/40 {
+  background-color: #f1f5f9 !important;
+}
+
+html.day input,
+html.day select,
+html.day textarea {
+  color: #0f172a !important;
+}
+
+/* Modale et Popups en mode Jour */
+html.day .bg-background\/95 {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+}
+
+/* Lueur chaude solaire pour les éléments interactifs du mode jour */
+html.day .lift:hover {
+  box-shadow: 0 16px 38px -10px rgba(2, 132, 199, 0.18) !important;
+  border-color: #0284c7 !important;
 }
 
 /* Masquer la barre de défilement tout en permettant le scroll */

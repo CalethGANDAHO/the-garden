@@ -1,10 +1,13 @@
 import React from 'react';
 import { MapPin, Clock, Phone, Utensils, Car, Truck, ParkingCircle, CreditCard, Accessibility } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { useVibe } from '../context/VibeContext';
 import InstagramIcon from './icons/InstagramIcon';
 
 export default function Footer() {
   const { t } = useLanguage();
+  const { vibe } = useVibe();
+  const isNight = vibe === 'night';
 
   const serviceBadges = [
     { icon: Utensils, label: "Sur place" },
@@ -16,13 +19,13 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative mt-16 overflow-hidden border-t border-white/10">
+    <footer className="relative mt-16 overflow-hidden border-t border-white/10 transition-colors">
       {/* Arrière-plan stylisé */}
       <img
-        src="/image/rooftop_lounge_night.webp"
-        alt="The Garden Rooftop ambiance de nuit"
+        src={isNight ? "/image/rooftop_lounge_night.webp" : "/image/clean_food_photograph.webp"}
+        alt={isNight ? "The Garden Rooftop ambiance de nuit" : "The Garden Rooftop ambiance de jour"}
         loading="lazy"
-        className="absolute inset-0 size-full object-cover opacity-25"
+        className="absolute inset-0 size-full object-cover opacity-20 transition-all duration-700"
       />
       <div className="hero-veil absolute inset-0" />
 
