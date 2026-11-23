@@ -88,6 +88,64 @@
       "acceptsReservations": "True"
     }
     </script>
+
+    <!-- Suppression stricte du tiroir et widget publicitaire Netlify -->
+    <style>
+      netlify-drawer,
+      #netlify-drawer,
+      [data-netlify-drawer],
+      [class*="netlify-drawer"],
+      [id*="netlify-drawer"],
+      [data-netlify-badge],
+      iframe[src*="netlify"],
+      iframe[title*="Netlify"],
+      iframe[id*="netlify"],
+      div:has(> iframe[src*="netlify"]),
+      div:has(> iframe[title*="Netlify"]),
+      div[id*="netlify-feedback"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        height: 0 !important;
+        width: 0 !important;
+        position: absolute !important;
+        z-index: -9999 !important;
+      }
+    </style>
+    <script>
+      (function() {
+        function removeNetlifyWidgets() {
+          var selectors = [
+            'netlify-drawer',
+            '#netlify-drawer',
+            '[data-netlify-drawer]',
+            '[class*="netlify-drawer"]',
+            '[id*="netlify-drawer"]',
+            '[data-netlify-badge]',
+            'iframe[src*="netlify"]',
+            'iframe[title*="Netlify"]',
+            'iframe[id*="netlify"]',
+            'div[id*="netlify-feedback"]'
+          ];
+          for (var i = 0; i < selectors.length; i++) {
+            var elements = document.querySelectorAll(selectors[i]);
+            for (var j = 0; j < elements.length; j++) {
+              try { elements[j].remove(); } catch(e) {}
+            }
+          }
+        }
+        removeNetlifyWidgets();
+        document.addEventListener('DOMContentLoaded', removeNetlifyWidgets);
+        window.addEventListener('load', removeNetlifyWidgets);
+        var observer = new MutationObserver(function() {
+          removeNetlifyWidgets();
+        });
+        if (document.documentElement) {
+          observer.observe(document.documentElement, { childList: true, subtree: true });
+        }
+      })();
+    </script>
   </head>
   <body class="bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
     <div id="root"></div>
